@@ -64,8 +64,7 @@ class MsiSummaryPropertySet {
     }
     
     setValueByMsiInfoString($MsiInfoString){
-        $found = $MsiInfoString -match '\[(( (?<PID>\d))|(?<PID>\d{2}))\].*= (?<value>.*)'
-        if ($found) {
+        if ($MsiInfoString -match '\[(( (?<PID>\d))|(?<PID>\d{2}))\].*= (?<value>.*)') {
             $this.setValueByMsiPID($matches["PID"],$matches["value"])
         }
     }
