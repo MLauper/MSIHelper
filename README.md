@@ -6,14 +6,16 @@ All retrieved attributes are documented here: https://msdn.microsoft.com/en-us/l
 
 The Module uses the tool MsiInfo.exe and parses the command line. This has been done, because Microsoft seems to provide only COM-Objects, which seem to be a bit buggy, and C++ bindings, which I didn't want to use.
 
-### Prerequisites
-The module requires MsiInfo.exe (https://msdn.microsoft.com/en-us/library/windows/desktop/aa370310(v=vs.85).aspx) and PowerShell 5.0.
+## Prerequisites
+The module requires MsiInfo.exe (https://msdn.microsoft.com/en-us/library/windows/desktop/aa370310(v=vs.85).aspx), MsiDb.exe (https://msdn.microsoft.com/en-us/library/windows/desktop/aa370083(v=vs.85).aspx) and PowerShell 5.0.
 
-MSIInfo is available as part of the Windows SDK which is available for free from https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk. 
+MSIInfo and MsiDb.exe are available as part of the Windows SDK which is available for free from https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk. 
 PowerShell 5.0 is available as part the WMF 5 which is as well available for free from https://www.microsoft.com/en-us/download/details.aspx?id=50395.
 
-### Usage
+## Usage
 You can either copy the module in a standard module directory or import it directly from the cloned repo. 
+
+### Retrieve Msi Summary Information
 If you have installed the Windows 10 SDK in the default location, you can run: 
 
 ```
@@ -46,3 +48,22 @@ MsiPID PropertyID       PropertyName              Value
     18 PID_APPNAME      Creating Application      Windows Installer XML (3.7.4128.0)...
     19 PID_SECURITY     Security                  2...
 ```
+
+### Retrieve Msi Required Property Information
+
+```
+git clone https://github.com/MLauper/MSIHelper.git
+Import-Module .\MSIHelper\MSIHelper.psd1
+Get-MsiInfo "C:\Program Files (x86)\Windows Kits\10\bin\x86\Orca-x86_en-us.msi"
+```
+Will result in:
+```
+Property        Value
+--------        -----
+ProductLanguage 1033
+Manufacturer    Microsoft Corporation
+ProductCode     {4F16AA60-602E-1C65-E6C5-86F96B238D28}
+ProductName     Orca
+ProductVersion  10.1.14393.33
+```
+

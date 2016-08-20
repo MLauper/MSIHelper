@@ -6,5 +6,6 @@ function Initialize-MsiHelper {
   ) 
 
   $Script:myMsiSummaryPropertySet = [MsiSummaryPropertySet]::new()
-
+  $Script:myMsiDBPropertySetRequired = [MsiDBPropertySetRequired]::new()
+  
 }
