@@ -64,16 +64,9 @@ class MsiSummaryPropertySet {
     }
     
     setValueByMsiInfoString($MsiInfoString){
-        $found = $MsiInfoString -match '='
+        $found = $MsiInfoString -match '\[(( (?<PID>\d))|(?<PID>\d{2}))\].*= (?<value>.*)'
         if ($found) {
-            $fragments = ($MsiInfoString.Split("="))
-            $value = ($fragments[1]).Substring(1)
-
-            $null = $MsiInfoString -replace ' ','' -match '\[\d{1,2}]'
-            $key = $matches[0] -replace '[\[\]]',''
-
-            $this.setValueByMsiPID($key,$value)
+            $this.setValueByMsiPID($matches["PID"],$matches["value"])
         }
     }
-
 }
