@@ -50,6 +50,7 @@ class MsiSummaryPropertySet {
     }
     
     loadValuesFromMsi($MsiPath){
+        $this.setDefaultMsiSummaryProperties()
         if (-not (Test-Path $this.MsiInfoExePath)) {
             Throw "MsiInfo.exe not found. Cannot load Summary Properties!"
         }
