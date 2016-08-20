@@ -16,8 +16,9 @@ function Get-MsiInfo {
   param 
   ( 
     [Parameter(Mandatory=$True, Position=1)]
+    [ValidateScript({Test-Path $_ -PathType "Leaf"})]
     [string]$MsiFilePath
-  ) 
+  )
 
   $Script:myMsiSummaryPropertySet.loadValuesFromMsi($MsiFilePath)
   

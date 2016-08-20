@@ -4,17 +4,11 @@ class MsiSummaryPropertySet {
 
     MsiSummaryPropertySet(){
         $this.setDefaultMsiSummaryProperties()
-        if (-not (Test-Path $this.MsiInfoExePath)) {
-            Write-Warning "MsiInfo.exe not found. Certain functionality may not be available."
-        }
     }
 
     MsiSummaryPropertySet($MsiInfoExePath){
         $this.setDefaultMsiSummaryProperties()
-        $this.MsiInfoExe = $MsiInfoExePath
-        if (-not (Test-Path $this.MsiInfoExePath)) {
-            Write-Error "Provided MsiInfo.exe not found. Certain functionality may not be available."
-        }
+        $this.setMsiInfoExePath($MsiInfoExePath)
     }
     
     setDefaultMsiSummaryProperties() {
@@ -52,7 +46,7 @@ class MsiSummaryPropertySet {
     loadValuesFromMsi($MsiPath){
         $this.setDefaultMsiSummaryProperties()
         if (-not (Test-Path $this.MsiInfoExePath)) {
-            Throw "MsiInfo.exe not found. Cannot load Summary Properties!"
+            Throw "MsiInfo.exe not found. Cannot load Summary Properties! `nCurrent path: " + $this.MsiInfoExePath + "`nUse Set-MsiInfoExePath `$MsiInfoExePath to set the proper location of the module."
         }
         $MsiInfo = & $this.MsiInfoExePath $MsiPath | Out-String
         $this.setValuesByMsiInfoOutput($MsiInfo)
@@ -66,6 +60,13 @@ class MsiSummaryPropertySet {
     setValueByMsiInfoString($MsiInfoString){
         if ($MsiInfoString -match '\[(( (?<PID>\d))|(?<PID>\d{2}))\].*= (?<value>.*)') {
             $this.setValueByMsiPID($matches["PID"],$matches["value"])
+        }
+    }
+
+    setMsiInfoExePath($MsiInfoExePath){
+        $this.MsiInfoExePath = $MsiInfoExePath
+        if (-not (Test-Path $this.MsiInfoExePath)) {
+            Write-Error "Provided MsiInfo.exe not found. Certain functionality may not be available. `nProvided path: $MsiInfoExePath `nUse Set-MsiInfoExePath `$MsiInfoExePath to set the proper location of the module."
         }
     }
 }
